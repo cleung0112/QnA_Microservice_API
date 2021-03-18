@@ -8,7 +8,7 @@ CREATE TABLE `Questions` (
   `reported` SMALLINT DEFAULT 0,
   `userID` INTEGER NOT NULL,
   `productID` INTEGER NOT NULL,
-  `askedTime` TIMESTAMP NOT NULL COMMENT 'Assumption: web app services customer from different time zone',
+  `askedTime` DATE NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (userID) REFERENCES `Users` (`id`),
   FOREIGN KEY (productID) REFERENCES `product` (`id`)
@@ -43,7 +43,7 @@ CREATE TABLE `Answers` (
   `answerBody` VARCHAR(500) NOT NULL,
   `helpfulness` SMALLINT DEFAULT 0,
   `reported` SMALLINT DEFAULT 0,
-  `answerTime` TIMESTAMP NOT NULL,
+  `answerTime` DATE NOT NULL,
   `userID` INTEGER NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (userID) REFERENCES `Users` (`id`)
@@ -53,12 +53,12 @@ CREATE TABLE `Answers` (
 DROP TABLE IF EXISTS `Questions and Answers`;
 
 CREATE TABLE `Questions and Answers` (
-  `id` INTEGER NULL AUTO_INCREMENT,
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
   `questionsId` INTEGER NOT NULL,
   `answersId` INTEGER NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (questionsId) REFERENCES `Questions` (`id`),
-
+  FOREIGN KEY (answersId) REFERENCES `Answers` (`id`),
 );
 
 

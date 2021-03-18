@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/Courageous-Cypress-SDC/question-answer-service-api/issues"
   },
-  "homepage": "https://github.com/Courageous-Cypress-SDC/question-answer-service-api#readme"
+  "homepage": "https://github.com/Courageous-Cypress-SDC/question-answer-service-api#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "fast-csv": "^4.3.6",
+    "node": "^15.10.0"
+  }
 }
