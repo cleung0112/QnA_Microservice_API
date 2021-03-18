@@ -1,10 +1,10 @@
 
-DROP TABLE IF EXISTS `Questions`;
+DROP TABLE IF EXISTS 'Questions';
 
-CREATE TABLE `Questions` (
+CREATE TABLE 'Questions' (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `questionBody` VARCHAR(255) NOT NULL,
-  `helpfulness` SMALLINT DEFAULT 0 COMMENT 'Assumption: total votes on helpfulness < 32767',
+  `helpfulness` SMALLINT DEFAULT 0,
   `reported` SMALLINT DEFAULT 0,
   `userID` INTEGER NOT NULL,
   `productID` INTEGER NOT NULL,
