@@ -1,5 +1,6 @@
 const fs = require('fs');
 const fastscv = require('fast-csv');
+const models = require('./Models');
 
 const questions = fs.createReadStream('questiontest.csv');
 const qData = [];
@@ -33,7 +34,8 @@ const qStream = fastscv.parse({ ignoreEmpty: true, quote: '"', escape: '"', })
             }
           })
           .on('end', () => {
-
+            // models.product.insertProduct(4312);
+            // models.user.insertUser(['tester', 'insert']);
           })
 
         photos.pipe(photoStream);
