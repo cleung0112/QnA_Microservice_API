@@ -36,6 +36,9 @@ const qStream = fastscv.parse({ ignoreEmpty: true, quote: '"', escape: '"', })
           .on('end', () => {
             // models.product.insertProduct(4312);
             // models.user.insertUser(['tester', 'insert']);
+            // models.questions.insertQuestions(['test', 12, 0, '123', 1232, '2020-9-01'])
+            // models.answers.insertAnswers(['answ1', 2, 0, '2020-9-01', 'tester'])
+            // models.answerphoto.insertPhoto(['urltest', '1'])
           })
 
         photos.pipe(photoStream);
