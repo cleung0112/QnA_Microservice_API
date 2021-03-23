@@ -1,12 +1,12 @@
 
-DROP TABLE IF EXISTS product;
+// DROP TABLE IF EXISTS product;
 
-CREATE TABLE product (
-  id SERIAL NOT NULL,
-  product_ID INTEGER NOT NULL,
-  PRIMARY KEY (id),
-  UNIQUE (product_ID)
-);
+// CREATE TABLE product (
+//   id SERIAL NOT NULL,
+//   product_ID INTEGER NOT NULL,
+//   PRIMARY KEY (id),
+//   UNIQUE (product_ID)
+// );
 
 DROP TABLE IF EXISTS Users;
 
@@ -23,16 +23,16 @@ DROP TABLE IF EXISTS Questions;
 
 CREATE TABLE Questions (
   id SERIAL NOT NULL,
+  productID INTEGER NOT NULL,
+  askedTime DATE NOT NULL,
+  userID INTEGER NOT NULL,
   questionBody VARCHAR(255) NOT NULL,
   helpfulness SMALLINT DEFAULT 0,
   reported SMALLINT DEFAULT 0,
-  userID INTEGER NOT NULL,
-  productID INTEGER NOT NULL,
-  askedTime DATE NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (userID) REFERENCES Users (id),
-  FOREIGN KEY (productID) REFERENCES product (id)
 );
+
 
 
 DROP TABLE IF EXISTS Answers;
@@ -49,16 +49,16 @@ CREATE TABLE Answers (
 );
 
 
-DROP TABLE IF EXISTS QuestionsAndAnswers;
+// DROP TABLE IF EXISTS QuestionsAndAnswers;
 
-CREATE TABLE QuestionsAndAnswers (
-  id SERIAL NOT NULL,
-  questionsId INTEGER NOT NULL,
-  answersId INTEGER NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY (questionsId) REFERENCES Questions (id),
-  FOREIGN KEY (answersId) REFERENCES Answers (id)
-);
+// CREATE TABLE QuestionsAndAnswers (
+//   id SERIAL NOT NULL,
+//   questionsId INTEGER NOT NULL,
+//   answersId INTEGER NULL,
+//   PRIMARY KEY (id),
+//   FOREIGN KEY (questionsId) REFERENCES Questions (id),
+//   FOREIGN KEY (answersId) REFERENCES Answers (id)
+// );
 
 
 DROP TABLE IF EXISTS AnswerPhoto;

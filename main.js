@@ -34,11 +34,21 @@ const qStream = fastscv.parse({ ignoreEmpty: true, quote: '"', escape: '"', })
             }
           })
           .on('end', () => {
+            console.log(qData);
+            qData.shift();
+            qData.map((question) => {
+              // models.product.insertProduct(question.product_id);
+              // models.user.insertUser([question.asker_name, question.asker_email]);
+              // let userId = models.user.findUser(question.asker_name);
+              // let productId = models.product.findProduct(question.product_id);
+              // models.questions.insertQuestions([question.body, question.helpful, question.reported, `${userId}`, `${productId}`, question.date_written])
+            })
             // models.product.insertProduct(4312);
             // models.user.insertUser(['tester', 'insert']);
             // models.questions.insertQuestions(['test', 12, 0, '123', 1232, '2020-9-01'])
             // models.answers.insertAnswers(['answ1', 2, 0, '2020-9-01', 'tester'])
             // models.answerphoto.insertPhoto(['urltest', '1'])
+            // models.QnA.insertQnA(['2', '1']);
           })
 
         photos.pipe(photoStream);
