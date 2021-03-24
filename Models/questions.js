@@ -40,7 +40,6 @@ module.exports = {
             const query = `INSERT INTO Questions (productid, questionbody, askedtime, userid ) VALUES ($1, $2, now(), $3)`;
             client.query(query, [...postPara], (err, result) => {
               if (err) {
-                console.log('3', err, result);
                 shouldAbortQuery(err)
               }
 

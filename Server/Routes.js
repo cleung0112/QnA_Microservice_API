@@ -8,6 +8,8 @@ router.get('/:question_id/answers', controller.answers.getAll);
 
 router.post('/:product_id/:name/:email/:body', controller.questions.postAQuestion);
 
+router.post('/:question_id/answers', controller.answers.postAnAnswer);
+
 router.put('/:question_id/helpful', controller.questions.reportQuestionAsHelpful);
 
 router.put('/:question_id/report', controller.questions.reportQuestion);
