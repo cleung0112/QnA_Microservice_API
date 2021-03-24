@@ -10,7 +10,10 @@ module.exports = {
 
   postAnAnswer: function(req, res) {
     const params = [req.params.question_id, req.query.name, req.query.email, req.query.body, req.query.photos];
-    models.answers.postAnAnswer( params, (result) => {
+    models.answers.postAnAnswer( params, (err, result) => {
+      if ( err ) {
+        res.status(404).send('Err at posting the answer');
+      }
       res.status(200).send('CREATED');
     })
   },

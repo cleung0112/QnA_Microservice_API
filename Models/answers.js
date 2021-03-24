@@ -28,9 +28,10 @@ module.exports = {
   postAnAnswer: function (AnswerDetail, callback) {
 
     const shouldAbortQuery = (err) => {
-      client.query('ROLLBACK', (err, result) => {
+      callback(err);
+      client.query('ROLLBACK', (err) => {
         if (err) {
-          return console.log('Err at postAnAnswer', err)
+          console.log('Err at postAnAnswer', err)
         }
       })
     }
@@ -57,34 +58,37 @@ module.exports = {
             const answerParams = [AnswerDetail[0], AnswerDetail[3]];
             answerParams.push(result.rows[0].id);
 
-
             client.query(`INSERT INTO Answers (question_id, answerbody, datewritten, userid) VALUES ($1, $2, now(), $3) RETURNING id`, [...answerParams], (err, result) => {
               if (err) {
                 shouldAbortQuery(err);
               }
 
               const answerId = result.rows[0].id;
-              if (AnswerDetail[4].length > 2) {
-                for (const photoUrl of AnswerDetail[4]) {
+              if (AnswerDetail[4] !== '[]' && AnswerDetail[4].length > 0 ) {
+                const photoURLs = AnswerDetail[4].replace(/ /g, '').substring(1).slice(0, -1).split(',');
+                for (const photoUrl of photoURLs) {
 
-                  answerPhoto.insertPhoto([photoUrl, answerId], (err, result) => {
+                  answerPhoto.insertPhoto([photoUrl, answerId], (err) => {
                     if (err) {
                       shouldAbortQuery(err);
                     }
-                    client.query('COMMIT', (err) => {
-                      if (err) {
-                        shouldAbortQuery(err);
-                      }
-                      callback('CREATED');
-                    })
                   })
                 }
+
+                client.query('COMMIT', (err, result) => {
+                  if (err) {
+                    shouldAbortQuery(err);
+                  }
+                  callback(err, 'CREATED');
+                })
+
               } else {
                 client.query('COMMIT', (err) => {
                   if (err) {
                     shouldAbortQuery(err);
+                  } else {
+                    callback(err, 'CREATED');
                   }
-                  callback('CREATED');
                 })
               }
             })

@@ -17,7 +17,7 @@ module.exports = {
 
     const shouldAbortQuery = (err) => {
       client.query('ROLLBACK', (err) => {
-        return console.log('err at postAQuestion', err);
+        console.log('err at postAQuestion', err);
       })
     }
 
