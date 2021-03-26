@@ -11,7 +11,9 @@ export let options = {
 };
 
 export default function () {
-  let res = http.get('http://localhost:5001/1/1/2');
+  const randomProductId = Math.floor(Math.random() * 1000011);
+
+  let res = http.get(`http://localhost:5001/${randomProductId}/1/5`);
   check(res, {
     'is status 200': (r) => r.status === 200,
   });

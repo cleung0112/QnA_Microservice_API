@@ -1,6 +1,7 @@
 import { sleep, check } from 'k6';
 import http from 'k6/http';
 
+
 export let options = {
   stages: [
     { duration: '1s', target: 1 },
@@ -11,12 +12,11 @@ export let options = {
 };
 
 export default function () {
-  const randomProductId = Math.floor(Math.random() * 1000011);
-
-  let res = http.post(`http://localhost:5001/${randomProductId}/test/test@gmail.com/k6TEST`);
+  let res = http.put(`http://localhost:5001/1/helpful`);
   check(res, {
-    'is status 201': (r) => r.status === 201,
+    'is status 204': (r) => r.status === 204,
   });
+
   sleep(10);
 }
 

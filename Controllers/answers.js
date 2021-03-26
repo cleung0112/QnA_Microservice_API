@@ -2,19 +2,21 @@ var models = require('../models/index.js');
 
 module.exports = {
   getAll: function (req, res) {
-    const params = [req.params.question_id, req.query.page * req.query.count, req.query.count];
+    const viewPage = req.query.page === '1' ? 0 : req.query.page * req.query.count;
+    const params = [req.params.question_id, viewPage, req.query.count || 5 ];
     models.answers.getALlNotReportedAnswers( params, (result) => {
       res.status(200).send(result.rows);
     })
   },
 
   postAnAnswer: function(req, res) {
-    const params = [req.params.question_id, req.query.name, req.query.email, req.query.body, req.query.photos];
+    const photoArray = req.query.photos ? req.query.photos : '[]';
+    const params = [req.params.question_id, req.query.name, req.query.email, req.query.body, photoArray ];
     models.answers.postAnAnswer( params, (err, result) => {
       if ( err ) {
         res.status(404).send('Err at posting the answer');
       }
-      res.status(200).send('CREATED');
+      res.status(201).send('CREATED');
     })
   },
 

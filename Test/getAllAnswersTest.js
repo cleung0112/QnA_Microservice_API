@@ -11,7 +11,9 @@ export let options = {
 };
 
 export default function () {
-  let res = http.get('http://localhost:5001/572/answers?page=1&count=2');
+  const randomQuestionId = Math.floor(Math.random() * 3521634);
+
+  let res = http.get(`http://localhost:5001/${randomQuestionId}/answers?page=1&count=4`);
   check(res, {
     'is status 200': (r) => r.status === 200,
   });

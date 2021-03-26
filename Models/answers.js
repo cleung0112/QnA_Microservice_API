@@ -3,17 +3,6 @@ const users = require('./user.js');
 const answerPhoto = require('./answerphoto.js');
 
 module.exports = {
-  insertAnswers: function (answerInfo) {
-    const query = "INSERT INTO answers (answerbody, helpfulness, reported, answertime, userid) VALUES ($1, $2, $3, $4, (SELECT id FROM users WHERE username = $5))";
-
-    pool.query(query, [...answerInfo], (err, result) => {
-      if (err) {
-        return console.log('err at insertAnswers', err)
-      }
-      console.log(result);
-    })
-  },
-
   getALlNotReportedAnswers: function (AnswerReq, callback) {
     const query = `SELECT Answers.id, Users.username, answerbody, datewritten, AnswerPhotos.url, helpfulness, reported FROM Answers LEFT JOIN AnswerPhotos ON Answers.id = AnswerPhotos.answerid LEFT JOIN Users on Answers.userId=Users.id WHERE Answers.question_id = $1 AND reported = 0 ORDER BY id OFFSET $2 LIMIT $3`;
 

@@ -3,7 +3,8 @@ var models = require('../models/index.js');
 module.exports = {
   getAll: function (req, res) {
     const viewPage = req.params.page === '1' ? 0 : req.params.page * req.params.count;
-    const params = [req.params.product_id, viewPage, req.params.count];
+    const questionCount = req.params.count ? req.params.count : 5;
+    const params = [req.params.product_id, viewPage, questionCount];
     models.questions.getALlUnreportedQuestions( params, (result) => {
       res.status(200).send(result.rows);
     })
@@ -22,7 +23,7 @@ module.exports = {
   reportQuestionAsHelpful: function(req, res) {
     models.questions.reportQuestionAsHelpful( req.params.question_id, (result) => {
       if ( result.rows.length === 0 ) {
-        return res.status(200).send('Question id not found in database');
+        return res.status(404).send('Question id not found in database');
       }
       res.status(204).send();
     })
@@ -31,7 +32,7 @@ module.exports = {
   reportQuestion: function(req, res) {
     models.questions.reportQuestion( req.params.question_id, (result) => {
       if ( result.rows.length === 0 ) {
-        return res.status(200).send('Question id not found in database');
+        return res.status(404).send('Question id not found in database');
       }
       res.status(204).send();
     })

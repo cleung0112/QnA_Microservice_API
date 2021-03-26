@@ -1,4 +1,4 @@
-const pool = require('../Database/index.js'); // pool
+const pool = require('../Database/index.js'); 
 const user = require('./user.js');
 
 module.exports = {

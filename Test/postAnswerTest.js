@@ -11,9 +11,9 @@ export let options = {
 };
 
 export default function () {
-  const randomProductId = Math.floor(Math.random() * 1000011);
+  const randomQuestionId = Math.floor(Math.random() * 3521634);
 
-  let res = http.post(`http://localhost:5001/${randomProductId}/test/test@gmail.com/k6TEST`);
+  let res = http.post(`http://localhost:5001/${randomQuestionId}/answers?name=test&email=test@gmail.com&body=k6TEST&photos=`);
   check(res, {
     'is status 201': (r) => r.status === 201,
   });
