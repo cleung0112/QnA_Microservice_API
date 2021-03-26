@@ -2,10 +2,9 @@ const controller = require('../controllers/index.js');
 const router = require('express').Router();
 
 router.get('/:product_id/:page/:count', controller.questions.getAll);
-//http://localhost:5001/572/1/2
+//http://localhost:5001/572/0/2
 router.get('/:question_id/answers', controller.answers.getAll);
 //http://localhost:5001/572/answers?page=1&count=2
-
 router.post('/:product_id/:name/:email/:body', controller.questions.postAQuestion);
 
 router.post('/:question_id/answers', controller.answers.postAnAnswer);

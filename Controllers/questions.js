@@ -2,7 +2,8 @@ var models = require('../models/index.js');
 
 module.exports = {
   getAll: function (req, res) {
-    const params = [req.params.product_id, req.params.page * req.params.count, req.params.count];
+    const viewPage = req.params.page === '1' ? 0 : req.params.page * req.params.count;
+    const params = [req.params.product_id, viewPage, req.params.count];
     models.questions.getALlUnreportedQuestions( params, (result) => {
       res.status(200).send(result.rows);
     })
@@ -10,7 +11,10 @@ module.exports = {
 
   postAQuestion: function(req, res) {
     const params = [req.params.product_id, req.params.name, req.params.email, req.params.body];
-    models.questions.postAQuestion( params, (result) => {
+    models.questions.postAQuestion( params, (err, result) => {
+      if ( err ) {
+        res.status(404).send('Err at posting the question');
+      }
       res.status(201).send('CREATED');
     })
   },

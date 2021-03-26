@@ -1,11 +1,11 @@
-const client = require('../Database/index.js');
+const pool = require('../Database/index.js'); // pool
 const user = require('./user.js');
 
 module.exports = {
   getALlUnreportedQuestions: function (QuestionsReq, callback) {
     const query = `SELECT Questions.id, Users.username, questionbody, askedtime, helpfulness, reported FROM Questions LEFT JOIN Users ON Questions.userId = Users.id WHERE Questions.productid = $1 AND Questions.reported = 0 ORDER BY id OFFSET $2 LIMIT $3`;
 
-    client.query(query, [...QuestionsReq], (err, result) => {
+    pool.query(query, [...QuestionsReq], (err, result) => {
       if (err) {
         console.log('err at getALlUnreportedQuestions', err)
       }
@@ -16,12 +16,13 @@ module.exports = {
   postAQuestion: function (questionInfo, callback) {
 
     const shouldAbortQuery = (err) => {
-      client.query('ROLLBACK', (err) => {
+      callback(err);
+      pool.query('ROLLBACK', (err) => {
         console.log('err at postAQuestion', err);
       })
     }
 
-    client.query('BEGIN', (err) => {
+    pool.query('BEGIN', (err) => {
       if (err) {
         shouldAbortQuery(err)
       }
@@ -29,7 +30,7 @@ module.exports = {
         if (err) {
           shouldAbortQuery(err)
         }
-        client.query('COMMIT', (err) => {
+        pool.query('COMMIT', (err) => {
           if (err) {
             shouldAbortQuery(err)
           }
@@ -38,16 +39,16 @@ module.exports = {
             postPara.push(result.rows[0].id);
 
             const query = `INSERT INTO Questions (productid, questionbody, askedtime, userid ) VALUES ($1, $2, now(), $3)`;
-            client.query(query, [...postPara], (err, result) => {
+            pool.query(query, [...postPara], (err, result) => {
               if (err) {
                 shouldAbortQuery(err)
               }
 
-              client.query('COMMIT', (err) => {
+              pool.query('COMMIT', (err) => {
                 if (err) {
                   console.log('Cannot commit transaction', err);
                 } else {
-                  callback('Created');
+                  callback(err, 'Created');
                 }
               })
             })
@@ -60,7 +61,7 @@ module.exports = {
 
   reportQuestionAsHelpful: function (questionId, callback) {
     const query = `UPDATE Questions SET helpfulness = helpfulness + 1 WHERE id = $1 RETURNING helpfulness`;
-    client.query(query, [questionId], (err, result) => {
+    pool.query(query, [questionId], (err, result) => {
       if (err) {
         console.log('err at reportQuestionAsHelpful', err)
       }
@@ -70,7 +71,7 @@ module.exports = {
 
   reportQuestion: function (questionId, callback) {
     const query = `UPDATE Questions SET reported = reported + 1 WHERE id = $1 RETURNING reported`;
-    client.query(query, [questionId], (err, result) => {
+    pool.query(query, [questionId], (err, result) => {
       if (err) {
         console.log('err at reportQuestion', err)
       }
@@ -95,3 +96,18 @@ module.exports = {
 
 
 // INSERT INTO Questions (productid, questionbody, askedtime, userid ) VALUES (1, 'tester', now(), 15914586);
+
+
+
+// SELECT row_to_json(qna)
+// FROM (
+//   SELECT id,
+//     (
+//       SELECT jsonb_agg(nested_section)
+//         FROM (
+//           SELECT * FROM answers WHERE ;
+//         )
+//     )
+
+//   FROM Questions;
+// )
