@@ -1,4 +1,4 @@
-const controller = require('../controllers/index.js');
+const controller = require('../Controllers/index.js');
 const router = require('express').Router();
 
 router.get('/:product_id/:page/:count', controller.questions.getAll);
