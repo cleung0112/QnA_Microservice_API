@@ -3,7 +3,7 @@ var models = require('../models/index.js');
 module.exports = {
   getAll: function (req, res) {
     const viewPage = req.params.page === '1' || !req.params.page ? 0 : req.params.page * req.params.count;
-    const params = [req.params.product_id, viewPage, questionCount || 5];
+    const params = [req.params.product_id, viewPage, req.params.count];
     models.questions.getALlUnreportedQuestions( params, (result) => {
       res.status(200).send(result.rows);
     })
