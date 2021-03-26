@@ -1,4 +1,4 @@
-var models = require('../models/index.js');
+var models = require('../Models/index.js');
 
 module.exports = {
   getAll: function (req, res) {
