@@ -4,7 +4,7 @@ const answerPhoto = require('./answerphoto.js');
 
 module.exports = {
   getALlNotReportedAnswers: function (AnswerReq, callback) {
-    const query = `SELECT Answers.id, Users.username, answerbody, datewritten, AnswerPhotos.url, helpfulness, reported FROM Answers LEFT JOIN AnswerPhotos ON Answers.id = AnswerPhotos.answerid LEFT JOIN Users on Answers.userId=Users.id WHERE Answers.question_id = $1 AND reported = 0 ORDER BY id OFFSET $2 LIMIT $3`;
+    const query = `SELECT Answers.id, Users.username, answerbody, datewritten, AnswerPhotos.url, helpfulness, reported FROM Answers LEFT JOIN AnswerPhotos ON Answers.id = AnswerPhotos.answerid LEFT JOIN Users on Answers.userId=Users.id WHERE Answers.questionId = $1 AND reported = 0 ORDER BY id OFFSET $2 LIMIT $3`;
 
     pool.query(query, [...AnswerReq], (err, result) => {
       if (err) {
@@ -47,7 +47,7 @@ module.exports = {
             const answerParams = [AnswerDetail[0], AnswerDetail[3]];
             answerParams.push(result.rows[0].id);
 
-            pool.query(`INSERT INTO Answers (question_id, answerbody, datewritten, userid) VALUES ($1, $2, now(), $3) RETURNING id`, [...answerParams], (err, result) => {
+            pool.query(`INSERT INTO Answers (questionId, answerbody, datewritten, userid) VALUES ($1, $2, now(), $3) RETURNING id`, [...answerParams], (err, result) => {
               if (err) {
                 shouldAbortQuery(err);
               }
