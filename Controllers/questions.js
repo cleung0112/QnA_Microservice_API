@@ -18,9 +18,8 @@ module.exports = {
     models.questions.postAQuestion(params, (err, result) => {
       if (err) {
         return res.status(404).send('Error at posting the question');
-      } else {
-        res.status(201).send('CREATED');
       }
+      res.status(201).send('CREATED');
     })
   },
 
