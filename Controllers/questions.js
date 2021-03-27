@@ -13,14 +13,16 @@ module.exports = {
     const emailValidation = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if ( !emailValidation.test(req.params.email) ) {
       return res.status(404).send('Please enter a valid email');
+    } else {
+      const params = [req.params.product_id, req.params.name, req.params.email, req.params.body];
+      models.questions.postAQuestion( params, (err, result) => {
+        if ( err ) {
+          return res.status(404).send('Error at posting the question');
+        } else {
+          res.status(201).send('CREATED');
+        }
+      })
     }
-    const params = [req.params.product_id, req.params.name, req.params.email, req.params.body];
-    models.questions.postAQuestion( params, (err, result) => {
-      if ( err ) {
-        return res.status(404).send('Err at posting the question');
-      }
-      res.status(201).send('CREATED');
-    })
   },
 
   reportQuestionAsHelpful: function(req, res) {

@@ -15,6 +15,22 @@ FROM '/Users/carmanleung/Downloads/questions.csv'
 DELIMITER ','
 CSV HEADER;
 
+CREATE TABLE Questions (
+  id SERIAL NOT NULL,
+  productId INTEGER NOT NULL,
+  questionBody VARCHAR(255) NOT NULL,
+  askedTime DATE NOT NULL,
+  reported SMALLINT DEFAULT 0,
+  helpfulness SMALLINT DEFAULT 0,
+  userId INT NOT NULL,
+  PRIMARY KEY (id)
+);
+
+COPY Questions(id, productId, questionBody, askedTime, reported, helpfulness, userId)
+FROM '/home/ubuntu/questions.csv'
+DELIMITER ','
+CSV HEADER;
+
 CREATE TABLE Answers (
   id SERIAL NOT NULL,
   question_id INT NOT NULL,
@@ -33,6 +49,23 @@ DELIMITER ','
 CSV HEADER;
 
 
+CREATE TABLE Answers (
+  id SERIAL NOT NULL,
+  questionId INT NOT NULL,
+  answerBody VARCHAR(255) NOT NULL,
+  dateWritten DATE NOT NULL,
+  reported SMALLINT DEFAULT 0,
+  helpfulness SMALLINT DEFAULT 0,
+  userId INT NOT NULL,
+  PRIMARY KEY (id)
+);
+
+COPY Answers(id, questionId, answerBody, dateWritten, reported, helpfulness, userId)
+FROM '/home/ubuntu/answers.csv'
+DELIMITER ','
+CSV HEADER;
+
+
 CREATE TABLE AnswerPhotos (
   id SERIAL NOT NULL,
   answer_id INTEGER NOT NULL,
@@ -45,7 +78,17 @@ FROM '/Users/carmanleung/Downloads/answers_photos.csv'
 DELIMITER ','
 CSV HEADER;
 
+CREATE TABLE AnswerPhotos (
+  id SERIAL NOT NULL,
+  url TEXT NOT NULL,
+  answerid INTEGER NOT NULL,
+  PRIMARY KEY (id)
+);
 
+COPY AnswerPhotos(id, url, answerid)
+FROM '/home/ubuntu/answerphotos.csv'
+DELIMITER ','
+CSV HEADER;
 
 CREATE TABLE Users (
   id SERIAL NOT NULL,
@@ -53,6 +96,11 @@ CREATE TABLE Users (
   email VARCHAR(70) NOT NULL,
   PRIMARY KEY (id)
 );
+
+COPY Users(id, username, email)
+FROM '/home/ubuntu/users.csv'
+DELIMITER ','
+CSV HEADER;
 
 INSERT INTO Users(username, email) SELECT asker_name, asker_email FROM Questions;
 INSERT INTO Users(username, email) SELECT answerer_name, answerer_email FROM Answers;
@@ -144,7 +192,9 @@ ALTER TABLE Questions ALTER COLUMN userid SET NOT NULL;
 INSERT INTO answers (id, answerbody, helpfulness, reported, answertime, userid) VALUES (5, 'hiii', 12,0, '2020-01-22', 5);
 
 //create composed index
-create index on Answers(question_id, reported);
+create index on Answers(questionid, reported);
+
+create index on Questions(productid, reported);
 
 // insert a question
 "INSERT INTO questions (productid, questionsbody, askedntime, reported, helpfulness, userid) VALUES ($1, $2, $3, $4, $5, (SELECT id FROM users WHERE username = $6) )";
