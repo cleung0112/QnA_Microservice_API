@@ -16,10 +16,11 @@ module.exports = {
   postAQuestion: function (questionInfo, callback) {
 
     const shouldAbortQuery = (err) => {
-      callback(err);
       pool.query('ROLLBACK', (err) => {
         console.log('err at postAQuestion', err);
-      })
+      });
+      callback(err);
+      return;
     }
 
     pool.query('BEGIN', (err) => {
@@ -28,10 +29,12 @@ module.exports = {
       }
       user.insertUser([questionInfo[1], questionInfo[2]], (err, result) => {
         if (err) {
+          console.log('1');
           shouldAbortQuery(err)
         }
         pool.query('COMMIT', (err) => {
           if (err) {
+            console.log('2');
             shouldAbortQuery(err)
           }
           const postPara = [questionInfo[0], questionInfo[3]];
@@ -41,6 +44,7 @@ module.exports = {
             const query = `INSERT INTO Questions (productid, questionbody, askedtime, userid ) VALUES ($1, $2, now(), $3)`;
             pool.query(query, [...postPara], (err, result) => {
               if (err) {
+                console.log('3');
                 shouldAbortQuery(err)
               }
 
