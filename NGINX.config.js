@@ -6,6 +6,7 @@ http {
   upstream servers_backend {
     server 54.219.4.157;
     server 13.56.179.92;
+    server 54.215.56.137;
   }
 
   server {
