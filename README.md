@@ -1,4 +1,4 @@
-# QuestionAndAnswer-service-api
+# Question And Answer Microservice API
 
 ## List Questions
 GET /qa/questions 
@@ -78,9 +78,6 @@ Returns answers for a given question. This list does not include any reported an
 Parameter          |  Type   | Description
 :-------------------------:|:-------------------------: |:-------------------------:
 product_id  | integer | Required ID of the question for wich answers are needed
-
-page  | integer | Selects the page of results to return. Default 1.
-count  | integer | Specifies how many results per page to return. Default 5.
 
 ### Query Parameters
 
