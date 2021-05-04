@@ -1,7 +1,9 @@
 # Question And Answer Microservice API
 
 ## List Questions
+```
 GET /qa/questions 
+```
 
 Retrieves a list of questions for a particular product. This list does not include any reported questions.
 
@@ -70,7 +72,9 @@ Status: 200 OK
 
 
 ## Answers List
+```
 GET /qa/questions/:question_id/answers
+```
 Returns answers for a given question. This list does not include any reported answers.
 
 ### Parameters
@@ -125,7 +129,9 @@ Status: 200 OK
 ```
 
 ## Add a Question
+```
 POST /qa/questions
+```
 Adds a question for the given product
 
 ### Parameters
